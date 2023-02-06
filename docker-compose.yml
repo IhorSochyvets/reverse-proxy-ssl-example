@@ -1,0 +1,36 @@
+version: '3.8'
+
+networks:
+  lab-haproxy:
+
+haproxy:
+  build: ./haproxy
+  container_name: haproxy
+  ports:
+    - '8888:80'
+    - '443:443'
+    - '8404:8404'
+  volumes:
+    - ./haproxy/:/usr/local/etc/haproxy:ro
+  links:
+    - web1
+    - web2
+    - web3
+
+web1:
+  build: ./web
+  container_name: web1
+  networks:
+    - lab-haproxy
+
+web1:
+  build: ./web
+  container_name: web2
+  networks:
+    - lab-haproxy
+
+web1:
+  build: ./web
+  container_name: web3
+  networks:
+    - lab-haproxy
